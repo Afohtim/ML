@@ -14,17 +14,17 @@ struct Edge
 
 class Neuron
 {
+private:
+	double data = 0;
+	std::vector<Edge> *out_edges;
 public:
 	Neuron();
 
-	double get_data(double input);
+	double get_data();
 	void push();
 	void set_data(double input);
 	void add_value(double input);
+	void normalize();
 
 	~Neuron();
-
-private:
-	double data = 0;
-	std::vector<Edge> out_edges;
 };
