@@ -8,14 +8,15 @@ class Neuron;
 
 struct Edge
 {
-	double weight;
+	Edge(Neuron *end);
+	double *weight;
 	Neuron *to = nullptr;
 };
 
 class Neuron
 {
 private:
-	double data = 0;
+	double data;
 	std::vector<Edge> *out_edges;
 public:
 	Neuron();
@@ -25,6 +26,7 @@ public:
 	void set_data(double input);
 	void add_value(double input);
 	void normalize();
+	void create_edge(Neuron *to);
 
 	~Neuron();
 };

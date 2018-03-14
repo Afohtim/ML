@@ -5,14 +5,17 @@ double sigma(double x)
 	return (1.0 / (1 + pow(e, -x)));
 }
 
-void push_edge(Neuron *from, Edge *edge)
+
+Edge::Edge(Neuron *end)
 {
-	edge->to->add_value((edge->weight) * from->get_data);
+	*weight = rand();
+	to = end;
+
 }
 
 Neuron::Neuron()
 {
-	//TODO
+	data = 0;
 }
 
 Neuron::~Neuron()
@@ -46,4 +49,9 @@ void Neuron::normalize()
 double Neuron::get_data()
 {
 	return this->data;
+}
+
+void Neuron::create_edge(Neuron *to)
+{
+	this->out_edges->push_back(Edge(to));
 }
