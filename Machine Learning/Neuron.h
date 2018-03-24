@@ -9,7 +9,7 @@ class Neuron;
 struct Edge
 {
 	Edge(Neuron *end);
-	double *weight;
+	double weight;
 	Neuron *to = nullptr;
 };
 
@@ -17,7 +17,7 @@ class Neuron
 {
 private:
 	double data;
-	std::vector<Edge> *out_edges;
+	std::vector<Edge> *out_edges = new std::vector<Edge>;
 public:
 	Neuron();
 

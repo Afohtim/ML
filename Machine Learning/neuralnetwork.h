@@ -4,8 +4,7 @@
 
 struct Layer
 {
-	std::vector<Neuron> *neurons = nullptr;
-	Layer(unsigned number_of_neurons);
+	std::vector<Neuron> *neurons = new std::vector<Neuron>;
 
 	void push();
 	void fill(std::vector<double> *data);
@@ -18,7 +17,7 @@ struct Layer
 class Neural_Network
 {
 private:
-	std::vector<Layer> *hiden_layers = nullptr;
+	std::vector<Layer> *hiden_layers = new std::vector<Layer>;
 	Layer *input_layer = nullptr, *output_layer = nullptr;
 public:
 	Neural_Network(unsigned number_of_inputs, unsigned number_of_outputs);

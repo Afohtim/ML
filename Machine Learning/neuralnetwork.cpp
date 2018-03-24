@@ -1,10 +1,7 @@
 #include "neuralnetwork.h"
 
 
-Layer::Layer(unsigned number_of_neurons)
-{
-	this->neurons = new std::vector<Neuron>(number_of_neurons);
-}
+
 
 Layer::~Layer()
 {
@@ -30,7 +27,7 @@ void Layer::fill(std::vector<double> *data)
 
 std::vector<double>* Layer::get_data()
 {
-	std::vector<double> *ans;
+	std::vector<double> *ans = new std::vector<double>;
 	for (auto neuron = this->neurons->begin(); neuron != this->neurons->end(); ++neuron)
 	{
 		ans->push_back(neuron->get_data());
@@ -51,8 +48,11 @@ void Layer::connect(Layer *with)
 
 Neural_Network::Neural_Network(unsigned number_of_inputs, unsigned number_of_outputs)
 {
-	this->input_layer = new Layer(number_of_inputs);
-	this->output_layer = new Layer(number_of_outputs);
+	this->input_layer = new Layer;
+	input_layer->neurons->resize(number_of_inputs);
+	this->output_layer = new Layer;
+	output_layer->neurons->resize(number_of_outputs);
+
 }
 
 Neural_Network::~Neural_Network()
@@ -74,7 +74,7 @@ std::vector<double>* Neural_Network::start(std::vector<double> *input)
 {
 	this->input_layer->fill(input);
 	input_layer->push();
-	for (auto layer = this->hiden_layers->begin; layer != this->hiden_layers->end(); layer++)
+	for (std::vector<Layer>::iterator layer = this->hiden_layers->begin(); layer != this->hiden_layers->end(); layer++)
 	{
 		layer->push();
 	}

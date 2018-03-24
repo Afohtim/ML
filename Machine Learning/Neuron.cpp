@@ -8,14 +8,14 @@ double sigma(double x)
 
 Edge::Edge(Neuron *end)
 {
-	*weight = rand();
+	weight = rand();
 	to = end;
 
 }
 
 Neuron::Neuron()
 {
-	data = 0;
+	data = rand();
 }
 
 Neuron::~Neuron()
@@ -35,9 +35,9 @@ void Neuron::add_value(double input)
 
 void Neuron::push()
 {
-	for (std::vector<Edge>::iterator edge = this->out_edges->begin(); edge != this->out_edges->end(); ++edge)
+	for (auto edge = this->out_edges->begin(); edge != this->out_edges->end(); ++edge)
 	{
-		edge->to->add_value((edge->weight) * this->get_data);
+		edge->to->add_value((edge->weight) * this->data);
 	}
 }
 
