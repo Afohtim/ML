@@ -4,22 +4,24 @@
 
 void learn(unsigned count, Neural_Network &net)
 {
-	std::vector<double> a(10, 0);
+	std::vector<double> *a = new std::vector<double>(10, 0);
 	for (unsigned i = 0; i < count; ++i)
 	{
 		for (int j = 0; j < 10; ++j)
 		{
-			a[j] = 1;
-			net.learn(&a, &a);
-			a[j] = 0;
+			(*a)[j] = double(rand() % 10000) / 40000;
 		}
+		std::vector<double> *res = net.learn(a, a);
+		delete res;
 	}
+	delete a;
+
 }
 
 int main()
 {
 	unsigned inputs = 10, outputs = 10;
-	std::vector<int> config = { 15, 10, 20 };
+	std::vector<int> config = { 10 };
 	Neural_Network net(inputs, outputs, &config);
 	std::vector<double> *data = new std::vector<double>(inputs, 0), *result = new std::vector<double>(outputs, 0);
 	
@@ -34,15 +36,17 @@ int main()
 		}
 		else
 		{
-			if (command != "z")
-				(*data)[num] = 1;
+			for (int j = 0; j < 10; ++j)
+			{
+				(*data)[j] = double(rand() % 10) / 40;
+			}
 			result = net.start(data);
+			
 			for (auto res : *data)
 			{
 				std::cout << res << ' ';
 			}
 			std::cout << std::endl;
-			(*data)[num] = 0;
 			for (auto res : *result)
 			{
 				std::cout << res << ' ';

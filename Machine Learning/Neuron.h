@@ -3,7 +3,8 @@
 #include<cmath>
 
 #define e 2.71828
-#define ALPHA 10
+#define ALPHA 0.5
+#define EPS 1e-3
 
 class Neuron;
 
@@ -18,12 +19,16 @@ struct Edge
 class Neuron
 {
 private:
-	double data = 0;
+	double data;
+	double bias;
 	std::vector<Edge> *out_edges = new std::vector<Edge>;
+	double sigma_der = 0;
 	double derivative = 0;
+	double bias_der = 0;
 public:
 	Neuron();
 
+	void activate();
 	double get_der();
 	void set_der(double der);
 	void find_der();

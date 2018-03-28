@@ -11,7 +11,7 @@ struct Layer
 	void fill(std::vector<double> *data);
 	void connect(Layer *to);
 	std::vector<double>* get_data();
-	void softmax();
+	void activate_neurons();
 	void normalize();
 	std::vector<Neuron>::iterator begin();
 	std::vector<Neuron>::iterator end();

@@ -16,6 +16,7 @@ Edge::Edge(Neuron *end)
 Neuron::Neuron()
 {
 	data = 0;
+	bias = double(rand() % 10) / 10;
 }
 
 Neuron::~Neuron()
@@ -36,6 +37,7 @@ void Neuron::add_value(double input)
 void Neuron::push()
 {
 	this->derivative = 0;
+	sigma_der = pow(e, -data) / pow(1 + pow(e, -data), 2);
 	for (auto edge = this->out_edges->begin(); edge != this->out_edges->end(); ++edge)
 	{
 		edge->to->add_value((edge->weight) * this->data);
@@ -46,6 +48,13 @@ void Neuron::push()
 void Neuron::normalize()
 {
 	this->data = sigma(data);
+	if (data < EPS) data = 0;
+}
+
+void Neuron::activate()
+{
+	data = sigma(data + bias);
+	if (data < EPS) data = 0;
 }
 
 double Neuron::get_der()
@@ -62,13 +71,15 @@ void Neuron::find_der()
 {
 	for (auto edge = out_edges->begin(); edge != out_edges->end(); ++edge)
 	{
-		edge->gradient = edge->to->get_der() * this->data;
-		this->derivative += edge->weight * edge->to->get_der();
+		edge->gradient = edge->to->get_der() * this->data * this->sigma_der;
+		this->derivative += edge->weight * edge->to->get_der() * this->sigma_der;
+		this->bias_der += this->sigma_der * this->data;
 	}
 	for (auto edge = out_edges->begin(); edge != out_edges->end(); ++edge)
 	{
 		edge->weight -= ALPHA * edge->gradient;
 	}
+
 
 }
 

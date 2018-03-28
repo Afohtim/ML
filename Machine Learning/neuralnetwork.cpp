@@ -36,20 +36,13 @@ std::vector<double>* Layer::get_data()
 	return ans;
 }
 
-void Layer::softmax()
+
+
+void Layer::activate_neurons()
 {
-	double sum = 0;
-	for (auto neuron = this->neurons->begin(); neuron != this->neurons->end(); ++neuron)
+	for (auto neuron = this->begin(); neuron != this->end(); ++neuron)
 	{
-		sum += neuron->get_data();
-	}
-	if (sum == 0)
-	{
-		return;
-	}
-	for (auto neuron = this->neurons->begin(); neuron != this->neurons->end(); ++neuron)
-	{
-		neuron->set_data(neuron->get_data() / sum);
+		neuron->activate();
 	}
 }
 
@@ -118,9 +111,6 @@ std::vector<double>* Neural_Network::learn(std::vector<double>* input, std::vect
 	{
 		neuron->find_der();
 	}
-
-	
-
 	return res;
 }
 
@@ -152,6 +142,8 @@ void Neural_Network::clear()
 	}
 	zeroes->resize(output_layer->neurons->size());
 	output_layer->fill(zeroes);
+	zeroes->clear();
+	delete zeroes;
 }
 
 
@@ -162,9 +154,9 @@ std::vector<double>* Neural_Network::start(std::vector<double> *input)
 	input_layer->push();
 	for (std::vector<Layer>::iterator layer = this->hiden_layers->begin(); layer != this->hiden_layers->end(); layer++)
 	{
-		layer->normalize();
+		layer->activate_neurons();
 		layer->push();
 	}
-	this->output_layer->softmax();
+	this->output_layer->normalize();
 	return this->output_layer->get_data();
 }
