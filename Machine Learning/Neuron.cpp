@@ -8,14 +8,14 @@ double sigma(double x)
 
 Edge::Edge(Neuron *end)
 {
-	weight = rand();
+	weight = (rand()%10 - 5);
 	to = end;
 
 }
 
 Neuron::Neuron()
 {
-	data = rand();
+	data = 0;
 }
 
 Neuron::~Neuron()
@@ -35,15 +35,41 @@ void Neuron::add_value(double input)
 
 void Neuron::push()
 {
+	this->derivative = 0;
 	for (auto edge = this->out_edges->begin(); edge != this->out_edges->end(); ++edge)
 	{
 		edge->to->add_value((edge->weight) * this->data);
+		edge->gradient = 0;
 	}
 }
 
 void Neuron::normalize()
 {
 	this->data = sigma(data);
+}
+
+double Neuron::get_der()
+{
+	return derivative;
+}
+
+void Neuron::set_der(double der)
+{
+	this->derivative = der;
+}
+
+void Neuron::find_der()
+{
+	for (auto edge = out_edges->begin(); edge != out_edges->end(); ++edge)
+	{
+		edge->gradient = edge->to->get_der() * this->data;
+		this->derivative += edge->weight * edge->to->get_der();
+	}
+	for (auto edge = out_edges->begin(); edge != out_edges->end(); ++edge)
+	{
+		edge->weight -= ALPHA * edge->gradient;
+	}
+
 }
 
 double Neuron::get_data()
