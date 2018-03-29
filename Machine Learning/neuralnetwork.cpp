@@ -107,7 +107,7 @@ std::vector<double>* Neural_Network::learn(std::vector<double>* input, std::vect
 			break;
 		}
 	}
-	for (auto neuron = this->output_layer->neurons->begin(); neuron != this->output_layer->neurons->end(); ++neuron)
+	for (auto neuron = this->input_layer->neurons->begin(); neuron != this->input_layer->neurons->end(); ++neuron)
 	{
 		neuron->find_der();
 	}
@@ -157,6 +157,6 @@ std::vector<double>* Neural_Network::start(std::vector<double> *input)
 		layer->activate_neurons();
 		layer->push();
 	}
-	this->output_layer->normalize();
+	this->output_layer->activate_neurons();
 	return this->output_layer->get_data();
 }

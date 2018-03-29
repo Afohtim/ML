@@ -3,8 +3,9 @@
 #include<cmath>
 
 #define e 2.71828
-#define ALPHA 0.5
+#define ALPHA 0.1
 #define EPS 1e-3
+#define max_step 10
 
 class Neuron;
 
@@ -25,6 +26,7 @@ private:
 	double sigma_der = 0;
 	double derivative = 0;
 	double bias_der = 0;
+	int step = 0;
 public:
 	Neuron();
 
