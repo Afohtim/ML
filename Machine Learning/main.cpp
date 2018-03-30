@@ -1,26 +1,42 @@
 #include "neuralnetwork.h"
 #include <iostream>
-#include<string>
+#include <string>
+#include <ctime>
 
-void learn(unsigned count, Neural_Network &net)
+void learn(double count, Neural_Network &net, unsigned inputs)
 {
-	std::vector<double> *a = new std::vector<double>(10, 0);
-	for (unsigned i = 0; i < count; ++i)
+	std::vector<double> *a = new std::vector<double>(inputs, 0);
+	if (count < 0)
 	{
-		for (int j = 0; j < 10; ++j)
+		clock_t time = clock();
+		while((clock() - time) / (CLOCKS_PER_SEC * 60) < -count)
 		{
-			(*a)[j] = double(rand() % 10000) / 40000;
+			for (int j = 0; j < a->size(); ++j)
+			{
+				(*a)[j] = double(rand() % 10000) / 40000;
+			}
+			std::vector<double> *res = net.learn(a, a);
+			delete res;
 		}
-		std::vector<double> *res = net.learn(a, a);
-		delete res;
+	}
+	else
+	{
+		for (unsigned i = 0; i < count; ++i)
+		{
+			for (int j = 0; j < a->size(); ++j)
+			{
+				(*a)[j] = double(rand() % 10000) / 40000;
+			}
+			std::vector<double> *res = net.learn(a, a);
+			delete res;
+		}
 	}
 	delete a;
-
 }
 
 int main()
 {
-	unsigned inputs = 10, outputs = 10;
+	unsigned inputs = 2, outputs = 2;
 	std::vector<int> config = { 10 };
 	Neural_Network net(inputs, outputs, &config);
 	std::vector<double> *data = new std::vector<double>(inputs, 0), *result = new std::vector<double>(outputs, 0);
@@ -28,15 +44,15 @@ int main()
 	while (true)
 	{
 		std::string command;
-		int num;
+		double num;
 		std::cin >> command >> num;
 		if (command == "learn")
 		{
-			learn(num, net);
+			learn(num, net, inputs);
 		}
 		else
 		{
-			for (int j = 0; j < 10; ++j)
+			for (int j = 0; j < data->size(); ++j)
 			{
 				(*data)[j] = double(rand() % 10) / 40;
 			}

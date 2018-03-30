@@ -76,7 +76,7 @@ void Neuron::find_der()
 		edge->gradient += edge->to->derivative * this->data * edge->to->sigma_der;
 			
 		this->derivative += edge->weight * edge->to->derivative * edge->to->sigma_der;
-		this->bias_der += edge->to->sigma_der * edge->to->derivative;
+		this->bias_der += this->sigma_der * this->derivative;
 	}
 	this->step++;
 	if (step >= max_step)
@@ -87,9 +87,9 @@ void Neuron::find_der()
 			edge->gradient = 0;
 		}
 		step = 0;
-		/*this->bias -= ALPHA *  bias_der;
-		this->bias_der = 0;*/
-		//sigma_der = 0;
+		this->bias -= ALPHA *  bias_der;
+		this->bias_der = 0;
+		sigma_der = 0;
 	}
 	
 
